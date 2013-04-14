@@ -11,11 +11,54 @@
   			<div class="navbar-inner">
     			<a class="brand" href="#">TTS</a>
     			<ul class="nav">
-      				<li class="active"><a href="#">Home</a></li>
-      				<li><a href="#">Link</a></li>
-      				<li><a href="#">Link</a></li>
+      				<li class="active"><a href="#">Events</a></li>
+      				<li><a href="#">Common</a></li>
+      				<li><a href="#">Request</a></li>
+
+    			</ul>
+    			<ul class="nav pull-right">
+    				<li><a href="#">Profile</a></li>
     			</ul>
   			</div>
-		</div>
+  		</div>
+  			<div class="conteiner-fluid">
+  				<div class="row-fluid">
+  					<div class="span9">
+  						<div class="main-content">
+  							{% block content %}
+  								
+
+  							{% endblock %}
+  						</div>
+  					</div>
+  					<div class="span3">
+  						{% block projects %}
+  							<div class="projects-menu1">
+  								<div class="menu1-link">
+  									<a class="text-info" href="#">Management</a>
+  								</div>  								
+  								<div class="projects">
+  									<div class="container">
+  										<h3>Projects</h3>
+  									</div>
+  								</div>
+  								<div class="projects-menu2">
+  									<div class="container">
+  										<a class="text-info" href="#">New Project</a>
+  									</div>
+  								</div>
+  							</div>
+  						{% endblock %}
+  					</div>
+  				</div>
+
+  				
+  			</div>
+  			<footer class="footer">
+  					<div class="container">
+  						<p>Designed and built with all the love in the world by <a href="mailto:marika952.2@gmail.com">rika</a>.</p>
+  						<p>Copyrignt © 2013 RJ Inc.</p>
+  					</div>
+  				</footer>
 	</body>
 </html>
