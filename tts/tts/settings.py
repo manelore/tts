@@ -1,3 +1,5 @@
+import os
+
 # Django settings for tts project.
 
 DEBUG = True
@@ -48,6 +50,13 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
+
+PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
+
+def PROJECT_(p):
+        return os.path.normpath(os.path.join(PROJECT_ROOT, p))
+
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = ''
@@ -61,14 +70,15 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_('../collected-static/')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    PROJECT_('../static/'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -108,6 +118,7 @@ ROOT_URLCONF = 'tts.urls'
 WSGI_APPLICATION = 'tts.wsgi.application'
 
 TEMPLATE_DIRS = (
+    PROJECT_('../templates/'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

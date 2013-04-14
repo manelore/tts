@@ -1,0 +1,104 @@
+body {
+	width: 100%;
+	height: 100%;
+	font: 17px Helvetica, Arial;
+	background-color: #eff8f5;
+}
+
+
+/* Login */
+
+.login-container {
+	margin-top: 10%;
+	margin-left: 35%;
+	margin-right: 35%;
+}
+
+.login-container .form-holder {
+	background-color: #fff;
+	border-top-left-radius: 15px;
+	border-bottom-right-radius: 15px;	
+	height: 250px;
+
+	-moz-box-shadow: 0 0 10px rgba(0,0,0,0.3); 
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.3); 
+    box-shadow: 0 0 10px rgba(0,0,0,0.3); 
+}
+
+.login-container .form-holder form {
+	padding: 30px 40px;
+}
+
+.login-container .form-holder h2 {
+	color: #727272;
+	text-align: center;
+}
+
+.login-container input {
+	border: none;
+	border-bottom: 1px solid #727272;
+	width: 100%;
+	padding: 0;
+	height: 25px;
+}
+
+.login-container input[type=text], input[type=password] {
+	text-indent: 10px;
+	border-radius: 0;
+}
+
+.login-container input[type=submit] {
+	height: 35px;
+	font-size: 20px;
+	font-weight: bold;
+	margin-top: 15px;
+}
+
+.login-container input:focus {
+	box-shadow: none;
+	border-color: #727272;
+}
+
+/* End Login */
+
+/* Layout */
+
+.navbar-inner {
+	min-height: 40px;
+	padding-right: 20px;
+	padding-left: 20px;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #49AFCD;
+	background-image: -moz-linear-gradient(top, #5BC0DE, #2F96B4);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#5BC0DE), to(#2F96B4));
+	background-image: -webkit-linear-gradient(top, #5BC0DE, #2F96B4);
+	background-image: -o-linear-gradient(top, #5BC0DE, #2F96B4);
+	background-image: linear-gradient(to bottom, #5BC0DE, #2F96B4);
+	background-repeat: repeat-x;
+	border-color: #2F96B4 #2F96B4 #1F6377;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff2f96b4', GradientType=0);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+	border-radius: 0;
+	color: #fff;
+}
+
+.navbar-inner .brand {
+	color: #fff;
+}
+
+.navbar-inner .nav li a {
+	color: #fff;
+}
+
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+	color: #eee;
+	text-decoration: none;
+	background-color: #49AFCD;
+	-webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+	-moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+	box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+	padding: 12px 15px;
+}
+
+/* End Layout */
