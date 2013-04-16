@@ -8,24 +8,32 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         db.execute("""
-        CREATE VIEW timetrack_taskid_with_time AS 
-        SELECT timetrack_worklog.task_id, sum(timetrack_worklog.finish_at - timetrack_worklog.start_at) AS worktime
-        FROM timetrack_worklog
-        WHERE timetrack_worklog.active
-        GROUP BY timetrack_worklog.task_id;
+        CREATE FUNCTION timetrack_add_worklog_history_item()
+        RETURNS trigger AS
+        $BODY$
+        BEGIN
+            INSERT INTO timetrack_workloghistory
+            (task_id, work_type_id, user_id, start_at, finish_at, parent_worklog_id)
+             VALUES (OLD.task_id, OLD.work_type_id, OLD.user_id, OLD.start_at, OLD.finish_at, OLD.id);
+            RETURN NEW;
+        END;
+        $BODY$
+        LANGUAGE plpgsql VOLATILE
+        COST 100;
         """)
 
         db.execute("""
-        CREATE VIEW timetrack_task_with_time AS 
-        SELECT t.id, t.description, t.estimate, t.deadline, t.project_id, wl.worktime
-        FROM timetrack_task t
-        JOIN timetrack_taskid_with_time wl ON t.id = wl.task_id;
+        CREATE TRIGGER timetrack_worklog_after_update
+        AFTER UPDATE
+        ON timetrack_workloghistory
+        FOR EACH ROW
+        EXECUTE PROCEDURE timetrack_add_worklog_history_item();
         """)
-        
+
     def backwards(self, orm):
-        db.execute("DROP VIEW timetrack_task_with_time")
-        db.execute("DROP VIEW timetrack_taskid_with_time")
-       
+        db.execute("DROP TRIGGER timetrack_worklog_after_update ON timetrack_workloghistory")
+        db.execute("DROP FUNCTION timetrack_add_worklog_history_item()")
+
     models = {
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
