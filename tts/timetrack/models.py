@@ -9,7 +9,7 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 class WorkType(models.Model):
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
 
     class Meta:
         verbose_name = "Work type"
@@ -21,7 +21,7 @@ class WorkType(models.Model):
 class Project(models.Model):
 
     users = models.ManyToManyField(USER_MODEL)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         verbose_name = "Project"
