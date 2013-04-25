@@ -14,31 +14,16 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'accounts', ['Department'])
 
-        # Adding model 'User'
-        db.create_table(u'accounts_user', (
-            (u'user_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, primary_key=True)),
-            ('department', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.Department'])),
-        ))
-        db.send_create_signal(u'accounts', ['User'])
-
 
     def backwards(self, orm):
         # Deleting model 'Department'
         db.delete_table(u'accounts_department')
-
-        # Deleting model 'User'
-        db.delete_table(u'accounts_user')
 
 
     models = {
         u'accounts.department': {
             'Meta': {'object_name': 'Department'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        u'accounts.user': {
-            'Meta': {'object_name': 'User', '_ormbases': [u'auth.User']},
-            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Department']"}),
-            u'user_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},

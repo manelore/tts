@@ -25,11 +25,6 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '10'})
         },
-        u'accounts.user': {
-            'Meta': {'object_name': 'User', '_ormbases': [u'auth.User']},
-            'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['accounts.Department']"}),
-            u'user_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'primary_key': 'True'})
-        },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
