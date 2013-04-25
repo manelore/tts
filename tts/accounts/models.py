@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User as DjangoUser
+from django.contrib.auth.models import AbstractUser as DjangoUser
 
 
 class Department(models.Model):
@@ -7,4 +7,4 @@ class Department(models.Model):
 
 
 class User(DjangoUser):
-    department = models.ForeignKey('Department')
+    department = models.ForeignKey('Department', null=True)
