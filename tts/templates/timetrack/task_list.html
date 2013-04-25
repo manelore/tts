@@ -1,0 +1,87 @@
+{% extends 'layout.html'%}
+
+{% block nav_links %}
+    <li><a href="{% url 'index' %}">Events</a></li>
+    <li class="active"><a href="{% url 'tasks' %}">Tasks</a></li>
+    <li><a href="#">Common</a></li>
+    <li><a href="#">Request</a></li>
+{% endblock %}
+
+{% block content %}
+	<div id="tasks-content">
+		<h1>Tasks</h1>
+
+		<div class="tasks-filters well">
+			<form action="" method="post">
+				{% csrf_token %}
+				<div class="row-fluid">
+					<div class="span1">
+						<input type="checkbox" id="ch-project">
+					</div>
+					<div class="span2">
+						<p>Project</p>
+					</div>
+					<div class="span9">
+						<select id="project-filter">
+							<option value="Project">Project</option>
+						</select>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span1">
+						<input type="checkbox" id="ch-deadline">
+					</div>
+					<div class="span2">
+						<p>Deadline</p>
+					</div>
+					<div class="span3">
+						<input type="text" id="start-date" >
+					</div>
+					<div class="span3">
+						<input type="text" id="end-date">
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span12">
+						<input type="submit" class="btn btn-info" value="Applay filters">
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="tasks-head">
+			<div class="row-fluid">
+				<div class="span2">
+					<b>Project</b>
+				</div>
+				<div class="span5">
+					<b>Description</b>
+				</div>
+				<div class="span2">
+					<b>Estimate</b>
+				</div>
+				<div class="span2">
+					<b>Deadline</b>
+				</div>
+			</div>
+		</div>
+		<div class="tasks-body">
+			{% for t in tasks %}
+				<div class="row-fluid">
+					<div class="span2">
+						<p>{{ t.project.name }}</p>
+					</div>
+					<div class="span5">
+						<p>{{ t.description }}</p>
+					</div>
+					<div class="span2">
+						<p>{{ t.estimate }}</p>
+					</div>
+					<div class="span2">
+						<p>{{ t.deadline }}</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

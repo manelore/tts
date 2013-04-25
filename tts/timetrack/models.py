@@ -26,6 +26,9 @@ class Project(models.Model):
     class Meta:
         verbose_name = "Project"
 
+    def __unicode__(self):
+        return self.name
+
 
 class Task(models.Model):
 
@@ -36,6 +39,9 @@ class Task(models.Model):
 
     class Meta:
         verbose_name = "Task"
+
+    def __unicode__(self):
+        return self.description
 
 
 class WorkLogFieldsMixin(models.Model):

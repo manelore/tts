@@ -175,3 +175,22 @@ body {
 }
 
 /* End Layout */
+
+
+/* Tasks */
+
+#tasks-content {
+	padding: 15px;
+}
+
+#tasks-content h1 {
+	text-align: center;
+	font-family: 'Helvetica';
+	color: #727272;
+}
+
+#tasks-content .tasks-filters form {
+	margin: 0;
+}
+
+/* End Tasks */

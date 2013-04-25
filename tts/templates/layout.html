@@ -9,12 +9,14 @@
 	<body>
 		<div class="navbar">
   			<div class="navbar-inner">
-    			<a class="brand" href="#">TTS</a>
+    			<a class="brand" href="{% url 'index' %}">TTS</a>
     			<ul class="nav">
-      				<li class="active"><a href="#">Events</a></li>
+              {% block nav_links %}
+      				<li class="active"><a href="{% url 'index' %}">Events</a></li>
+              <li><a href="{% url 'tasks' %}">Tasks</a></li>
       				<li><a href="#">Common</a></li>
       				<li><a href="#">Request</a></li>
-
+              {% endblock %}
     			</ul>
     			<ul class="nav pull-right">
     				<li><a href="#">Profile</a></li>
