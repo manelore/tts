@@ -8,18 +8,10 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'User'
-        db.delete_table(u'accounts_user')
-
+        pass
 
     def backwards(self, orm):
-        # Adding model 'User'
-        db.create_table(u'accounts_user', (
-            ('department', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['accounts.Department'])),
-            (u'user_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal(u'accounts', ['User'])
-
+        pass
 
     models = {
         u'accounts.department': {
