@@ -59,6 +59,19 @@ body {
 	border-color: #727272;
 }
 
+.login-container .alert {
+	padding: 5px 35px 0px 14px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+	background-color: #FCF8E3;
+	border: 1px solid #FBEED5;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	line-height: 12px;
+	margin-top: -14px;
+	margin-bottom: 0 !important;
+}
+
 /* End Login */
 
 /* Layout */

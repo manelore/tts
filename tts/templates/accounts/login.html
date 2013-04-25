@@ -11,9 +11,15 @@
 		<div class="login-container">
 			<div class="form-holder">
 				<form method="post" action="">
+					{% csrf_token %}
 					<h2>Welcome to TTS</h2>
-					<input type="text" id="id_username" placeholder="USERNAME"/>
-					<input type="password" id="id_password" placeholder="PASSWORD"/>
+					{% if login_error %}
+						<div class="alert">
+							<p>{{ login_error }}</p>
+						</div>
+					{% endif %} 
+					<input type="text" name="username" id="id_username" placeholder="USERNAME"/>
+					<input type="password" name="password" id="id_password" placeholder="PASSWORD"/>
 					<input type="submit" class="btn btn-info" value="LOGIN"/>
 				</form>
 			</div>

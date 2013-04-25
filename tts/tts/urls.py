@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',	
 	url(r'^$', 'timetrack.views.index', name='index'),
-	url(r'^login/$', 'accounts.views.login', name='tts_login'),
+	url(r'^login/$', 'accounts.views.signin', name='tts_login'),
 	url(r'^overview/$', 'accounts.views.overview', name='overview'),
 
     # Examples:
