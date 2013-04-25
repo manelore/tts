@@ -7,25 +7,25 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        db.execute("""
-        CREATE VIEW timetrack_taskid_with_time AS 
-        SELECT timetrack_worklog.task_id, sum(timetrack_worklog.finish_at - timetrack_worklog.start_at) AS worktime
-        FROM timetrack_worklog
-        WHERE timetrack_worklog.active
-        GROUP BY timetrack_worklog.task_id;
-        """)
 
         db.execute("""
+        DROP VIEW timetrack_task_with_time;
+        CREATE VIEW timetrack_task_with_time AS 
+        SELECT t.id, t.description, t.estimate, t.deadline, t.project_id, wl.worktime
+        FROM timetrack_task t
+        LEFT JOIN timetrack_taskid_with_time wl ON t.id = wl.task_id;
+        """)
+
+    def backwards(self, orm):
+
+        db.execute("""
+        DROP VIEW timetrack_task_with_time;
         CREATE VIEW timetrack_task_with_time AS 
         SELECT t.id, t.description, t.estimate, t.deadline, t.project_id, wl.worktime
         FROM timetrack_task t
         JOIN timetrack_taskid_with_time wl ON t.id = wl.task_id;
         """)
 
-    def backwards(self, orm):
-        db.execute("DROP VIEW timetrack_task_with_time")
-        db.execute("DROP VIEW timetrack_taskid_with_time")
-       
     models = {
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -88,6 +88,15 @@ class Migration(DataMigration):
             'estimate': ('django.db.models.fields.IntegerField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['timetrack.Project']"})
+        },
+        u'timetrack.taskwithtime': {
+            'Meta': {'object_name': 'TaskWithTime', 'db_table': "u'timetrack_task_with_time'"},
+            'deadline': ('django.db.models.fields.DateTimeField', [], {}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'estimate': ('django.db.models.fields.IntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'project': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['timetrack.Project']"}),
+            'worktime': ('django.db.models.fields.IntegerField', [], {})
         },
         u'timetrack.worklog': {
             'Meta': {'object_name': 'WorkLog'},
