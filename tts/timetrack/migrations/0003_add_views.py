@@ -1,47 +1,31 @@
 # -*- coding: utf-8 -*-
 import datetime
 from south.db import db
-from south.v2 import SchemaMigration
+from south.v2 import DataMigration
 from django.db import models
 
-
-class Migration(SchemaMigration):
+class Migration(DataMigration):
 
     def forwards(self, orm):
-        # Adding model 'WorkLog'
-        db.create_table(u'timetrack_worklog', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('task', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timetrack.Task'])),
-            ('work_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timetrack.WorkType'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('start_at', self.gf('django.db.models.fields.DateTimeField')()),
-            ('finish_at', self.gf('django.db.models.fields.DateTimeField')()),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True, db_index=True)),
-        ))
-        db.send_create_signal(u'timetrack', ['WorkLog'])
+        db.execute("""
+        CREATE VIEW timetrack_taskid_with_time AS 
+        SELECT timetrack_worklog.task_id, sum(timetrack_worklog.finish_at - timetrack_worklog.start_at) AS worktime
+        FROM timetrack_worklog
+        WHERE timetrack_worklog.active
+        GROUP BY timetrack_worklog.task_id;
+        """)
 
-        # Adding model 'WorkLogHistory'
-        db.create_table(u'timetrack_workloghistory', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('task', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timetrack.Task'])),
-            ('work_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timetrack.WorkType'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('start_at', self.gf('django.db.models.fields.DateTimeField')()),
-            ('finish_at', self.gf('django.db.models.fields.DateTimeField')()),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True, db_index=True)),
-            ('parent_worklog', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['timetrack.WorkLog'])),
-        ))
-        db.send_create_signal(u'timetrack', ['WorkLogHistory'])
-
+        db.execute("""
+        CREATE VIEW timetrack_task_with_time AS 
+        SELECT t.id, t.description, t.estimate, t.deadline, t.project_id, wl.worktime
+        FROM timetrack_task t
+        LEFT JOIN timetrack_taskid_with_time wl ON t.id = wl.task_id;
+        """)
 
     def backwards(self, orm):
-        # Deleting model 'WorkLog'
-        db.delete_table(u'timetrack_worklog')
-
-        # Deleting model 'WorkLogHistory'
-        db.delete_table(u'timetrack_workloghistory')
-
-
+        db.execute("DROP VIEW timetrack_task_with_time")
+        db.execute("DROP VIEW timetrack_taskid_with_time")
+       
     models = {
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -89,7 +73,7 @@ class Migration(SchemaMigration):
         u'timetrack.project': {
             'Meta': {'object_name': 'Project'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'symmetrical': 'False'})
         },
         u'timetrack.request': {
@@ -129,8 +113,9 @@ class Migration(SchemaMigration):
         u'timetrack.worktype': {
             'Meta': {'object_name': 'WorkType'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'})
         }
     }
 
     complete_apps = ['timetrack']
+    symmetrical = True
