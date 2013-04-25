@@ -8,3 +8,6 @@ class Department(models.Model):
 
 class User(DjangoUser):
     department = models.ForeignKey('Department', null=True)
+
+    def group_list(self):
+    	return '|'.join(self.groups.all().values_list('name', flat=True))

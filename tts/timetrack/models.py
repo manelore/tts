@@ -2,6 +2,7 @@ from __future__ import print_function, division, unicode_literals, absolute_impo
 
 from django.db import models
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 
 USER_MODEL = settings.AUTH_USER_MODEL
@@ -22,12 +23,16 @@ class Project(models.Model):
 
     users = models.ManyToManyField(USER_MODEL)
     name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField()
 
     class Meta:
         verbose_name = "Project"
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('project', args=[self.slug])
 
 
 class BaseTask(models.Model):
@@ -95,6 +100,15 @@ class WorkLogHistory(WorkLogFieldsMixin, models.Model):
 class Request(models.Model):
 
     user = models.ForeignKey(USER_MODEL)
+    description = models.TextField()
+    start_at = models.DateTimeField()
+    finish_at = models.DateTimeField()
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    REQUEST_TYPES = [("ts", "Time shift"), ("vac", "Vacation"), ("unp", "Unpaid")]
+    request_type = models.CharField(max_length=10, choices=REQUEST_TYPES)
+
+    approved_by = models.ForeignKey(USER_MODEL, related_name='approver', blank=True, null=True)
 
     class Meta:
         verbose_name = "Request"

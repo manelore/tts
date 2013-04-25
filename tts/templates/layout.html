@@ -19,7 +19,7 @@
               {% endblock %}
     			</ul>
     			<ul class="nav pull-right">
-    				<li><a href="#">{{ user.first_name }} {{ user.last_name }} - {{ user.department }}</a></li>
+    				<li><a href="#">{{ user.first_name }} {{ user.last_name }} - {{ user.group_list }}</a></li>
     			</ul>
   			</div>
   		</div>
@@ -42,6 +42,9 @@
   								<div class="projects">
   									<div class="container">
   										<h3>Projects</h3>
+                      {% for p in user.project_set.all %}
+                        <p><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></p>
+                      {% endfor %}
   									</div>
   								</div>
   								<div class="projects-menu2">
