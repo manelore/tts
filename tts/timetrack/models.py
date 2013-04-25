@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
+from accounts.middleware import get_current_user
 
 USER_MODEL = settings.AUTH_USER_MODEL
 
@@ -19,11 +20,26 @@ class WorkType(models.Model):
         return "Work type {0}".format(self.name)
 
 
+class ProjectManager(models.Manager):
+
+    def get_query_set(self):
+        print('!!!!!!!!!!!!!!')
+        user = get_current_user()
+        if not user:
+            return super(ProjectManager, self).get_empty_query_set()
+        elif user.groups.filter(name="moderator").count() > 0:
+            return super(ProjectManager, self).get_query_set()
+        return super(ProjectManager, self).get_query_set().filter(users__in=[user])
+
+
 class Project(models.Model):
 
     users = models.ManyToManyField(USER_MODEL)
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField()
+
+    objects = ProjectManager()
+    default_manager = objects
 
     class Meta:
         verbose_name = "Project"
