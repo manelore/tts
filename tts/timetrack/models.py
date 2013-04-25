@@ -30,7 +30,7 @@ class Project(models.Model):
         return self.name
 
 
-class Task(models.Model):
+class BaseTask(models.Model):
 
     description = models.CharField(max_length=500)
     estimate = models.IntegerField()
@@ -38,10 +38,31 @@ class Task(models.Model):
     project = models.ForeignKey(Project)
 
     class Meta:
+        abstract = True
         verbose_name = "Task"
 
     def __unicode__(self):
         return self.description
+
+
+class Task(BaseTask):
+    pass
+
+
+class TaskWithTime(BaseTask):
+
+    worktime = models.IntegerField()
+
+    def save(self):
+        raise NotImplementedError
+
+    def delete(self):
+        raise NotImplementedError
+
+    class Meta:
+        verbose_name = "Task"
+        managed = False
+        db_table = 'timetrack_task_with_time'
 
 
 class WorkLogFieldsMixin(models.Model):
