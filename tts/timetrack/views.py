@@ -48,7 +48,8 @@ def tasks(request):
 
 
 def index(request):
-	return render(request, 'accounts/overview.html')
+	requests = Request.objects.all()
+	return render(request, 'accounts/overview.html', {'requests': requests})
 
 
 def project(request, slug=''):

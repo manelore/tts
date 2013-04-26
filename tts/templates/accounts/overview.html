@@ -1,4 +1,42 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
+	<div class="owerview-content">
+		<table class="table">
+			<thead>
+				<tr>
+					<td>Request Type</td>
+					<td>Description</td>
+					<td>Start Time</td>
+					<td>End Time</td>
+					<td>Created At</td>
+					<td>Created By</td>
+				</tr>
+			</thead>
+			<tbody>
+			{% for r in requests %}
+				{% if r.request_type == 'ts' %}
+				<tr class="success">
+					<td>Time Shift</td>
+				{% endif %}
+				{% if r.request_type == 'vac' %}
+				<tr class="warning">
+					<td>Vacation</td>
+				{% endif %}
+				{% if r.request_type == 'unp' %}
+				<tr class="error">
+					<td>Unpaid</td>
+				{% endif %}
+
+					<td>{{ r.description }}</td>
+					<td>{{ r.start_at }}</td>
+					<td>{{ r.finish_at }}</td>
+					<td>{{ r.created_date }}</td>
+					<td>{{ r.user.first_name }} {{ r.user.last_name }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
 {% endblock %}

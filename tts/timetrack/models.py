@@ -23,7 +23,6 @@ class WorkType(models.Model):
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
-        print('!!!!!!!!!!!!!!')
         user = get_current_user()
         if not user:
             return super(ProjectManager, self).get_empty_query_set()
