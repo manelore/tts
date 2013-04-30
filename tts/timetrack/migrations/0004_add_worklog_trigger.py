@@ -13,8 +13,8 @@ class Migration(DataMigration):
         $BODY$
         BEGIN
             INSERT INTO timetrack_workloghistory
-            (task_id, work_type_id, user_id, start_at, finish_at, parent_worklog_id)
-             VALUES (OLD.task_id, OLD.work_type_id, OLD.user_id, OLD.start_at, OLD.finish_at, OLD.id);
+            (task_id, work_type_id, user_id, start_at, finish_at, parent_worklog_id, active)
+             VALUES (OLD.task_id, OLD.work_type_id, OLD.user_id, OLD.start_at, OLD.finish_at, OLD.id, OLD.active);
             RETURN NEW;
         END;
         $BODY$
@@ -25,13 +25,13 @@ class Migration(DataMigration):
         db.execute("""
         CREATE TRIGGER timetrack_worklog_after_update
         AFTER UPDATE
-        ON timetrack_workloghistory
+        ON timetrack_worklog
         FOR EACH ROW
         EXECUTE PROCEDURE timetrack_add_worklog_history_item();
         """)
 
     def backwards(self, orm):
-        db.execute("DROP TRIGGER timetrack_worklog_after_update ON timetrack_workloghistory")
+        db.execute("DROP TRIGGER timetrack_worklog_after_update ON timetrack_worklog")
         db.execute("DROP FUNCTION timetrack_add_worklog_history_item()")
 
     models = {
