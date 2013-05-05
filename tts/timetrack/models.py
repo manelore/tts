@@ -10,7 +10,6 @@ USER_MODEL = settings.AUTH_USER_MODEL
 
 
 class WorkType(models.Model):
-
     name = models.CharField(max_length=50, unique=True)
 
     class Meta:
@@ -52,6 +51,7 @@ class Project(models.Model):
 
 
 class UserProject(models.Model):
+
     user = models.ForeignKey(USER_MODEL)
     project = models.ForeignKey(Project)
     PROJECT_ROLES = [(0, 'manager'), (1, 'user')]
