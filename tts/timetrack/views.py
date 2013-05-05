@@ -8,9 +8,9 @@ class FilterForm(forms.Form):
     start_date = forms.DateTimeField(required=False)
     end_date = forms.DateTimeField(required=False)
     project = forms.ModelChoiceField(
-        required=False,
-        queryset=Project.objects.all(),
-        empty_label="Any project",
+       required=False,
+       queryset=Project.objects.all() if Project.objects.all().count() > 0 else Project.objects.get_empty_query_set(),
+       empty_label="Any project",
     )
     min_estimate = forms.IntegerField(min_value=0, required=False)
     max_estimate = forms.IntegerField(min_value=0, max_value=99999, required=False)

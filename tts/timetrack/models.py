@@ -31,9 +31,10 @@ class ProjectManager(models.Manager):
         return super(ProjectManager, self).get_query_set().filter(users__in=[user])
 
 
+
 class Project(models.Model):
 
-    users = models.ManyToManyField(USER_MODEL)
+    users = models.ManyToManyField(USER_MODEL, through='UserProject')
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField()
 
@@ -48,6 +49,13 @@ class Project(models.Model):
 
     def get_absolute_url(self):
         return reverse('project', args=[self.slug])
+
+
+class UserProject(models.Model):
+    user = models.ForeignKey(USER_MODEL)
+    project = models.ForeignKey(Project)
+    PROJECT_ROLES = [(0, 'manager'), (1, 'user')]
+    role = models.IntegerField(choices=PROJECT_ROLES, default=1)
 
 
 class BaseTask(models.Model):
@@ -69,7 +77,15 @@ class Task(BaseTask):
     pass
 
 
+class ReadOnlyManager(models.Manager):
+
+    def delete(self, *args, **kwgs):
+        pass
+
+
 class TaskWithTime(BaseTask):
+
+    objects = ReadOnlyManager()
 
     worktime = models.IntegerField()
 
