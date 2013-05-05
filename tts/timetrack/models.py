@@ -77,15 +77,7 @@ class Task(BaseTask):
     pass
 
 
-class ReadOnlyManager(models.Manager):
-
-    def delete(self, *args, **kwgs):
-        pass
-
-
 class TaskWithTime(BaseTask):
-
-    objects = ReadOnlyManager()
 
     worktime = models.IntegerField()
 
