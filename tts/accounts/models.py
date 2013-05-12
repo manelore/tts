@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser as DjangoUser
+from django.core.urlresolvers import reverse
 
 
 class Department(models.Model):
@@ -20,3 +21,6 @@ class User(DjangoUser):
 
     def group_list(self):
     	return '|'.join(self.groups.all().values_list('name', flat=True))
+
+    def get_absolute_url(self):
+        return reverse('profile', args=[self.id])

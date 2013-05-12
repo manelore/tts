@@ -4,6 +4,10 @@
 		<link type="text/css" rel="stylesheet" media="all" href="{{ STATIC_URL }}bootstrap/css/bootstrap.css"/>
 		<link type="text/css" rel="stylesheet" media="all" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css"/>
 		<link type="text/css" rel="stylesheet" media="all" href="{{ STATIC_URL }}css/tts.css"/>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="{{  STATIC_URL }}bootstrap/js/bootstrap.js"></script>
+    {% block local_head %}
+    {% endblock %}
 		<title>{% block title %}TTS | Home{% endblock %}</title>
 	</head>
 	<body>
@@ -14,12 +18,12 @@
               {% block nav_links %}
       				<li class="active"><a href="{% url 'index' %}">Events</a></li>
               <li><a href="{% url 'tasks' %}">Tasks</a></li>
-      				<li><a href="#">Common</a></li>
-      				<li><a href="#">Request</a></li>
+      				<li><a href="{% url 'common' %}">Communal</a></li>
+      				<li><a href="{% url 'ooo_request'%}">Request</a></li>
               {% endblock %}
     			</ul>
     			<ul class="nav pull-right">
-    				<li><a href="#">{{ user.first_name }} {{ user.last_name }} - {{ user.group_list }}</a></li>
+    				<li><a href="{{ user.get_absolute_url }}">{{ user.first_name }} {{ user.last_name }} - {{ user.position }}</a></li>
     			</ul>
   			</div>
   		</div>

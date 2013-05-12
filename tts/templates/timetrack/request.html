@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+
+{% block local_head %}
+	{{ form.media }}
+{% endblock %}
+
+{% block nav_links %}
+    <li><a href="{% url 'index' %}">Events</a></li>
+    <li><a href="{% url 'tasks' %}">Tasks</a></li>
+    <li><a href="{% url 'common' %}">Communal</a></li>
+    <li class="active"><a href="{% url 'ooo_request'%}">Request</a></li>
+{% endblock %}
+
+{% block content %}
+
+	<div id="request-content">
+		<ul class="nav nav-pills">
+		  	<li {% if not new_request %}class="active"{% endif %}>
+		  	  <a href="{% url 'ooo_request' %}">My Requests</a>
+		  	</li>
+		  	<li {% if new_request %}class="active"{% endif %}>
+		  		<a href="{% url 'new_request'%}">New Request</a>
+		  	</li>
+		</ul>
+		{% if new_request %}
+
+			<form action='' method='post'>
+				{% csrf_token %}
+				<!-- <input type='hidden' name='user' id='id_user' value='{{ user.id }}'> -->
+				{{ form.as_table }}
+				<br/>
+				<p><button class="btn btn-info">Create Request</button></p>
+
+			</form>
+
+		{% else %}
+			<table class="table">
+			<thead>
+				<tr>
+					<th>Request Type</th>
+					<th>Description</th>
+					<th>Start Time</th>
+					<th>End Time</th>
+					<th>Created At</th>
+					<th>Created By</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for r in requests %}
+				{% if r.request_type == 'ts' %}
+				<tr class="success">
+					<td>Time Shift</td>
+				{% endif %}
+				{% if r.request_type == 'vac' %}
+				<tr class="warning">
+					<td>Vacation</td>
+				{% endif %}
+				{% if r.request_type == 'unp' %}
+				<tr class="error">
+					<td>Unpaid</td>
+				{% endif %}
+
+					<td>{{ r.description }}</td>
+					<td>{{ r.start_at }}</td>
+					<td>{{ r.finish_at }}</td>
+					<td>{{ r.created_date }}</td>
+					<td>{{ r.user.first_name }} {{ r.user.last_name }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+			</table>
+
+			<div class="pagination">
+		    	<span class="step-links">
+		    	    {% if requests.has_previous %}
+		    	        <a href="?page={{ requests.previous_page_number }}">previous</a>
+		    	    {% endif %}
+			
+			   	    <span class="current">
+			   	        Page {{ requests.number }} of {{ requests.paginator.num_pages }}.
+			   	    </span>
+		
+		   	   		{% if requests.has_next %}
+		   	        	<a href="?page={{ requests.next_page_number }}">next</a>
+			   	    {% endif %}
+		    	</span>
+			</div>
+		{% endif %}
+	</div>
+
+{% endblock %}

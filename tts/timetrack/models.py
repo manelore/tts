@@ -22,12 +22,13 @@ class WorkType(models.Model):
 class ProjectManager(models.Manager):
 
     def get_query_set(self):
-        user = get_current_user()
-        if not user:
-            return super(ProjectManager, self).get_empty_query_set()
-        elif user.groups.filter(name="moderator").count() > 0:
-            return super(ProjectManager, self).get_query_set()
-        return super(ProjectManager, self).get_query_set().filter(users__in=[user])
+        # user = get_current_user()
+        # if not user:
+        #     return super(ProjectManager, self).get_empty_query_set()
+        # elif user.groups.filter(name="moderator").count() > 0:
+        #     return super(ProjectManager, self).get_query_set()
+        # return super(ProjectManager, self).get_query_set().filter(users__in=[user])
+        return super(ProjectManager, self).get_query_set()
 
 
 
@@ -36,6 +37,7 @@ class Project(models.Model):
     users = models.ManyToManyField(USER_MODEL, through='UserProject')
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField()
+    description = models.TextField(blank=True, default='description')
 
     objects = ProjectManager()
     default_manager = objects

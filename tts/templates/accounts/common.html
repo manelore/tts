@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+
+{% block nav_links %}
+    <li><a href="{% url 'index' %}">Events</a></li>
+    <li><a href="{% url 'tasks' %}">Tasks</a></li>
+    <li class="active"><a href="{% url 'common' %}">Communal</a></li>
+    <li><a href="{% url 'ooo_request'%}">Request</a></li>
+{% endblock %}
+
+{% block content %}
+
+	<div id="common-content">
+		<ul class="nav nav-pills">
+  			<li class="active">
+    			<a href="{% url 'common' %}">Profiles</a>
+  			</li>
+  			<li><a href="#">Time Journal</a></li>
+		</ul>
+	
+
+		<table class="table">
+			<thead>
+				<tr>
+					<td>#</td>
+					<td>Username</td>
+					<td>First Name</td>
+					<td>Last Name</td>
+					<td>Department</td>
+					<td>Position</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for p in profiles %}
+					<tr>
+						<td>{{ p.id }}</td>
+						<td><a href="{{ p.get_absolute_url }}">{{ p.username }}</a></td>
+						<td>{{ p.first_name }}</td>
+						<td>{{ p.last_name }}</td>
+						<td>{{ p.department.name }}</td>
+						<td>{{ p.position }}</td>
+					</tr>
+				{% endfor %}
+
+			</tbody>
+		
+		</table>
+
+		<div class="pagination">
+		    <span class="step-links">
+		        {% if profiles.has_previous %}
+		            <a href="?page={{ profiles.previous_page_number }}">previous</a>
+		        {% endif %}
+		
+		        <span class="current">
+		            Page {{ profiles.number }} of {{ profiles.paginator.num_pages }}.
+		        </span>
+		
+		        {% if profiles.has_next %}
+		            <a href="?page={{ profiles.next_page_number }}">next</a>
+		        {% endif %}
+		    </span>
+		</div>
+	</div>
+{% endblock %}

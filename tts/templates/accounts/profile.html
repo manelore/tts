@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+
+
+{% block nav_links %}
+    <li><a href="{% url 'index' %}">Events</a></li>
+    <li><a href="{% url 'tasks' %}">Tasks</a></li>
+    <li><a href="{% url 'common' %}">Communal</a></li>
+    <li><a href="{% url 'ooo_request'%}">Request</a></li>
+{% endblock %}
+
+{% block content %}
+
+	<div id="common-content">
+		<div class="tabbable tabs-left">
+  			<ul class="nav nav-tabs">
+  				<li class="active">
+  					<a href="#profile" data-toggle="tab">Profile</a>
+  				</li>
+  				<li>
+  					<a href="#projects" data-toggle="tab">Projects</a>
+  				</li>
+  			</ul>
+  			<div class="tab-content">
+  				<div class="tab-pane active" id="profile">
+  					<div class="row-fluid">
+  						<div class="span3">
+  							<img src="{{ profile.photo.image.url }}"></img>
+  						</div>
+  						<div class="span9">
+  							<p><b>ID:</b> {{ profile.id }}</p>
+  							<p><b>Username:</b> {{profile.username}}</p>
+  							<p><b>First Name:</b> {{profile.first_name}}</p>
+  							<p><b>Last Name:</b> {{profile.last_name}}</p>
+  							<p><b>Position:</b> {{profile.position}}</p>
+  							<p><b>Department:</b> {{profile.depatrment.name}}</p>
+  							<p><b>Email:</b> {{profile.email}}</p>
+  							<p><b>Skype:</b> {{profile.skype}}</p>
+  						</div>
+  					</div>
+  				</div>
+  				<div class="tab-pane" id="projects">
+  					
+  						<table class="table">
+  							<thead>
+  								<tr>
+  									<th>Project</th>
+  									<th>Description</th>
+  									<th>Role</th>
+  								</tr>
+  							</thead>
+  							<tbody>
+  								{% for up in profile.userproject_set.all %}
+  									<tr>
+  										<td>{{ up.project.name }}</td>
+  										<td>{{ up.project.desctiption }}</td>
+  										<td>{% if up.role == 0 %}manager{% else %}user{% endif %}</td>
+  									</tr>
+  								{% endfor %}
+  							</tbody>
+  						</table>
+  						
+
+  					
+  				</div>
+  			</div>
+		</div>
+
+		
+	</div>
+{% endblock %}

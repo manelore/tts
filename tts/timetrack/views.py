@@ -1,23 +1,17 @@
-from django.shortcuts import render
-from django import forms
+from datetime import datetime, timedelta
+
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404
 
 from timetrack.models import *  # noqa
+from timetrack.forms import FilterForm, RequestForm
 
-
-class FilterForm(forms.Form):
-    start_date = forms.DateTimeField(required=False)
-    end_date = forms.DateTimeField(required=False)
-    project = forms.ModelChoiceField(
-       required=False,
-       queryset=Project.objects.all() if Project.objects.all().count() > 0 else Project.objects.get_empty_query_set(),
-       empty_label="Any project",
-    )
-    min_estimate = forms.IntegerField(min_value=0, required=False)
-    max_estimate = forms.IntegerField(min_value=0, max_value=99999, required=False)
 
 
 def tasks(request):
-
+    if not request.user.is_authenticated():
+        return redirect('tts_login')
     ff = FilterForm(request.GET)
 
     tasks = TaskWithTime.objects.all()
@@ -48,9 +42,42 @@ def tasks(request):
 
 
 def index(request):
-	requests = Request.objects.all()
-	return render(request, 'accounts/overview.html', {'requests': requests})
+    if not request.user.is_authenticated():
+        return redirect('tts_login')
+    requests = Request.objects.filter(created_date__gt=datetime.now() - timedelta(days=1))
+    return render(request, 'accounts/overview.html', {'requests': requests})
 
 
 def project(request, slug=''):
-	return render(request, 'layout.html')
+    if not request.user.is_authenticated():
+        return redirect('tts_login')
+    try:
+        pr = Project.objects.get(slug=slug)
+    except Project.DoesNotExist:
+        return Http404
+    return render(request, 'timetrack/project.html', {'project': pr})
+
+
+def ooo_request(request):
+    request_list = request.user.request_set.all()
+    paginator = Paginator(request_list, 10)
+    page = request.GET.get('page')
+    try:
+        requests = paginator.page(page)
+    except PageNotAnInteger:
+        requests = paginator.page(1)
+    except EmptyPage:
+        requests = paginator.page(paginator.num_pages)
+    return render(request,
+                  'timetrack/request.html', 
+                  {'new_request': False, 
+                   'requests': requests})
+
+
+def new_request(request):
+    form = RequestForm()
+    if request.method == "POST":
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render(request, 'timetrack/request.html', {'new_request': True, 'form': form})

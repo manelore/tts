@@ -207,3 +207,41 @@ body {
 }
 
 /* End Tasks */
+
+/* Common */
+
+#common-content {
+	padding: 25px;
+}
+
+
+/* End Common */
+
+/* Request */
+
+#request-content {
+	padding: 25px;
+}
+
+#request-content textarea {
+	width: 80%;
+}
+
+#request-content input {
+	width: 80%;
+}
+
+#request-content select {
+	width: 81.5%;
+}
+
+/* End Request */
+
+
+/* Project */
+
+#project-content {
+	padding: 25px;
+}
+
+/* End Project */
