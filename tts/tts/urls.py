@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^common/$', 'accounts.views.common', name='common'),
     url(r'^request/$', 'timetrack.views.ooo_request', name='ooo_request'),
     url(r'^new-request/$', 'timetrack.views.new_request', name='new_request'),
+    url(r'^track-time/(?P<taskid>\d+)/$', 'timetrack.views.track_time', name='track_time'),
+    url(r'^worklog/$', 'timetrack.views.worklog', name='worklog'),
 
     # Examples:
     # url(r'^$', 'tts.views.home', name='home'),

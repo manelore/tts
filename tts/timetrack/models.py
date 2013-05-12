@@ -62,6 +62,7 @@ class UserProject(models.Model):
 
 class BaseTask(models.Model):
 
+    name = models.CharField(max_length=100, default='task')
     description = models.CharField(max_length=500)
     estimate = models.IntegerField()
     deadline = models.DateTimeField()

@@ -245,3 +245,20 @@ body {
 }
 
 /* End Project */
+
+/* Track time */
+
+#track-content {
+	padding: 25px;
+}
+
+/* End Track Time */
+
+
+/* Worklog */
+
+#worklog-content {
+	padding: 25px;
+}
+
+/* End WorkLog */

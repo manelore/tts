@@ -2,7 +2,8 @@ from django import forms
 
 from datetimewidget.widgets import DateTimeWidget
 
-from timetrack.models import Project, Request
+from timetrack.models import Project, Request, WorkLog, Task
+from accounts.models import User
 
 
 
@@ -30,5 +31,24 @@ class RequestForm(forms.ModelForm):
         }
 		widgets = {
                 	'start_at': DateTimeWidget(options=dateTimeOptions),
-                	'finish_at': DateTimeWidget(options=dateTimeOptions)
+                	'finish_at': DateTimeWidget(options=dateTimeOptions),
+                	'user': forms.HiddenInput()
             	  }
+
+
+class WorkLogForm(forms.ModelForm):
+
+	class Meta:
+		model = WorkLog
+		fields = ('work_type', 'start_at', 'finish_at', 'user', 'task')
+		dateTimeOptions = {
+							'format': 'dd/mm/yyyy HH:ii P',
+							'autoclose': 'true',
+							'showMeridian' : 'true'
+							}
+		widgets = {
+					'start_at': DateTimeWidget(options=dateTimeOptions),
+					'finish_at': DateTimeWidget(options=dateTimeOptions),
+					'user': forms.HiddenInput(),
+					'task': forms.HiddenInput()
+				  }

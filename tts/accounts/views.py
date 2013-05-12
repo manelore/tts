@@ -27,7 +27,7 @@ def signin(request):
 @login_required
 def common(request):
 	users_list = User.objects.all()
-	paginator = Paginator(users_list, 2) # Show 25 contacts per page
+	paginator = Paginator(users_list, 10) # Show 25 contacts per page
 
 	page = request.GET.get('page')
 	try:

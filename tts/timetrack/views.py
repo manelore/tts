@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
 
 from timetrack.models import *  # noqa
-from timetrack.forms import FilterForm, RequestForm
+from timetrack.forms import FilterForm, RequestForm, WorkLogForm
 
 
 
@@ -59,7 +59,7 @@ def project(request, slug=''):
 
 
 def ooo_request(request):
-    request_list = request.user.request_set.all()
+    request_list = request.user.request_set.all().order_by('-created_date')
     paginator = Paginator(request_list, 10)
     page = request.GET.get('page')
     try:
@@ -75,9 +75,30 @@ def ooo_request(request):
 
 
 def new_request(request):
-    form = RequestForm()
+    form = RequestForm(initial={'user': request.user})
     if request.method == "POST":
         form = RequestForm(request.POST)
         if form.is_valid():
             form.save()
     return render(request, 'timetrack/request.html', {'new_request': True, 'form': form})
+
+
+def track_time(request, taskid=0):    
+    try:
+        task = Task.objects.get(id=taskid)
+        user = request.user
+        form = WorkLogForm(initial={'user': user, 'task': task})
+        if request.method == "POST":
+            
+            form = WorkLogForm(request.POST)
+            if form.is_valid():
+                form.save()
+        return render(request, 'timetrack/track_time.html', {'form': form})
+    except Task.DoesNotExist:
+        raise Http404
+
+
+def worklog(request):
+    user = request.user
+    worklog = user.worklog_set.all()
+    return render(request, 'timetrack/worklog.html', {'worklog': worklog})
