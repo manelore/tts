@@ -27,9 +27,10 @@ $$ LANGUAGE plpgsql;
         """)
 
     def backwards(self, orm):
-        db.execute("""
-        
-        """)
+        #db.execute("""
+        #
+        #""")
+        pass
 
     models = {
         u'accounts.department': {

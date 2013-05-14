@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block local_head %}
+	{{ uw_form.media }}
+{% endblock %}
+
+{% block nav_links %}
+    <li><a href="{% url 'index' %}">Events</a></li>
+    <li><a href="{% url 'tasks' %}">Tasks</a></li>
+    <li><a href="{% url 'common' %}">Communal</a></li>
+    <li><a href="{% url 'ooo_request'%}">Request</a></li>
+    <li><a href="{% url 'worklog'%}">Work Log</a></li>
+{% endblock %}
+
+{% block content %}
+	<div id="reports-content">
+		<legend>Import</legend>
+		{% if is_admin %}
+			<p>Format:</p>
+			<p>From date, To date, Task Name, User Name, Work type name</p>
+			<pre><code>fromd,tod,tname,uname,wtname
+2013-11-02 10:20,2013-11-02 10:21,task1,admin,wtname</code></pre>
+			<form action="" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ form }}
+				<button class="btn btn-info">Upload</button>
+			</form>
+		{% else %}
+			<h2>Only administrators can upload data</h2>
+		{% endif %}
+	</div>
+{% endblock %}
