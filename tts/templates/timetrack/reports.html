@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block local_head %}
+	{{ uw_form.media }}
+{% endblock %}
+
+{% block nav_links %}
+    <li><a href="{% url 'index' %}">Events</a></li>
+    <li><a href="{% url 'tasks' %}">Tasks</a></li>
+    <li><a href="{% url 'common' %}">Communal</a></li>
+    <li><a href="{% url 'ooo_request'%}">Request</a></li>
+    <li><a href="{% url 'worklog'%}">Work Log</a></li>
+{% endblock %}
+
+{% block content %}
+	<div id="reports-content">
+		<legend>Reports</legend>
+		<div class="well">
+			<form action="" method='post'>
+				{% csrf_token %}
+			<div class="row-fluid">
+				<div class="span5">
+					<p>User Work Log Report</p>
+				</div>
+				<div class="span1">
+					<button name="csv" class="btn btn-info" value="uw" href="#">CSV</button>
+				</div>
+				<div class="span1">
+					<button name="xls" class="btn btn-info" value="uw" href="#">XLS</button>
+				</div>
+			</div>
+			{{ uw_form.as_table }}
+			</form>
+		</div>
+		<div class="well">
+			<form action="" method='post'>
+				{% csrf_token %}
+			<div class="row-fluid">
+				<div class="span5">
+					<p>Project Report</p>
+				</div>
+				<div class="span1">
+					<button name="csv" class="btn btn-info" value="pr" href="#">CSV</button>
+				</div>
+				<div class="span1">
+					<button name="xls" class="btn btn-info" value="pr" href="#">XLS</button>
+				</div>
+			</div>
+			{{ pr_form.as_table }}
+			</form>
+		</div>
+	</div>
+{% endblock %}

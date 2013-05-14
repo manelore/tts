@@ -18,6 +18,10 @@ urlpatterns = patterns('',
     url(r'^new-request/$', 'timetrack.views.new_request', name='new_request'),
     url(r'^track-time/(?P<taskid>\d+)/$', 'timetrack.views.track_time', name='track_time'),
     url(r'^worklog/$', 'timetrack.views.worklog', name='worklog'),
+    url(r'^worklog/edit/(?P<id>\d+)/$', 'timetrack.views.worklog_edit', name='worklog_edit'),
+    url(r'^reports/$', 'timetrack.views.reports', name='reports'),
+    url(r'^import/$', 'timetrack.views.export', name='export'),
+    #url(r'^management/$'),
 
     # Examples:
     # url(r'^$', 'tts.views.home', name='home'),

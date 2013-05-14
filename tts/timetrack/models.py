@@ -6,6 +6,10 @@ from django.core.urlresolvers import reverse
 
 from accounts.middleware import get_current_user
 
+from django.db import connection
+from contextlib import closing
+
+
 USER_MODEL = settings.AUTH_USER_MODEL
 
 
@@ -114,6 +118,9 @@ class WorkLog(WorkLogFieldsMixin, models.Model):
     class Meta:
         verbose_name = "Work log"
 
+    def __unicode__(self):
+        return "%s,%s,%s,%s" % (self.user.username, self.task.name, self.start_at, self.finish_at,)
+
 
 class WorkLogHistory(WorkLogFieldsMixin, models.Model):
 
@@ -148,3 +155,39 @@ class DayOffLog(models.Model):
 
     class Meta:
         verbose_name = "Day off"
+
+
+def report_select_user_worklog(user, fr, to):
+
+    with closing(connection.cursor()) as c:
+
+        c.execute("""
+            SELECT start_at, finish_at, wt.name AS "worktype", t.name AS "task", p.name AS "project"
+            FROM timetrack_worklog AS w
+            JOIN timetrack_worktype AS wt ON wt.id = w.work_type_id
+            JOIN timetrack_task AS t ON w.task_id = t.id
+            JOIN timetrack_project AS p ON p.id = t.project_id
+            WHERE ((start_at BETWEEN %(from)s AND %(to)s) OR (finish_at BETWEEN %(from)s AND %(to)s))
+              AND user_id = %(user_id)s
+        """, {'from': fr, 'to': to, 'user_id': user.id})
+
+        for row in c:
+            yield row
+
+
+def report_select_project_report(project):
+    with closing(connection.cursor()) as c:
+
+        c.execute("""
+            SELECT u.username, t.name AS "task", t.description, wt.name AS "worktype", (w.finish_at - w.start_at) AS "work_time",
+                   DATE(w.start_at) AS "date"
+            FROM timetrack_worklog AS w
+            JOIN timetrack_worktype AS wt ON wt.id = w.work_type_id
+            JOIN timetrack_task AS t ON w.task_id = t.id
+            JOIN accounts_user AS u ON w.user_id = u.id
+            WHERE t.project_id = %(pr_id)s
+            ORDER BY w.start_at
+        """, {'pr_id': project.id})
+
+        for row in c:
+            yield row

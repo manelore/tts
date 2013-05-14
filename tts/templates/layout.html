@@ -42,7 +42,7 @@
   						{% block projects %}
   							<div class="projects-menu1">
   								<div class="menu1-link">
-  									<a class="text-info" href="#">Management</a>
+  									<a class="text-info" href="{% url 'reports' %}">Reports</a>
   								</div>  								
   								<div class="projects">
   									<div class="container">
@@ -54,7 +54,7 @@
   								</div>
   								<div class="projects-menu2">
   									<div class="container">
-  										<a class="text-info" href="#">New Project</a>
+  										<a class="text-info" href="{% url 'export' %}">Load data</a>
   									</div>
   								</div>
   							</div>
