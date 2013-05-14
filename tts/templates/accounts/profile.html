@@ -53,7 +53,7 @@
   								{% for up in profile.userproject_set.all %}
   									<tr>
   										<td>{{ up.project.name }}</td>
-  										<td>{{ up.project.desctiption }}</td>
+  										<td>{{ up.project.description }}</td>
   										<td>{% if up.role == 0 %}manager{% else %}user{% endif %}</td>
   									</tr>
   								{% endfor %}
